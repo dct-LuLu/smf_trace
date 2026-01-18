@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 17:10:41 by jaubry--          #+#    #+#             */
-/*   Updated: 2026/01/15 19:23:34 by jaubry--         ###   ########.fr       */
+/*   Updated: 2026/01/15 21:10:22 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,25 @@ void	smf_trace(const std::string& str_func)
 	const std::size_t		padding_size = (30 / SMF_LVL) + 15;
 	const std::string		fg = fg_from_kind(kind);
 	const std::string		bg = bg_from_kind(kind);
-	const std::string		padding = pad_right(class_name + kind_name, padding_size);
+	std::string				padding;
+
+	if (SMF_LVL == 1)
+		padding = pad_right(class_name + kind_name, padding_size);
+	else if (SMF_LVL == 2)
+		padding = pad_right(class_name, padding_size / 2);
 
 	std::cout	<< fg << bg << smf_ansi::BOLD 
 				<< class_name
-				<< smf_ansi::RESET << fg << " "
+				<< smf_ansi::RESET << fg
+#if (SMF_LVL == 2)
+				<< padding
+#else
+				<< " "
+#endif
 				<< kind_name
-				<< padding 
+#if (SMF_LVL == 1)
+				<< padding
 				<< str_func
+#endif
 				<< smf_ansi::RESET << std::endl;
 }

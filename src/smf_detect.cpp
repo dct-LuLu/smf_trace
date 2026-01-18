@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 19:22:00 by jaubry--          #+#    #+#             */
-/*   Updated: 2026/01/15 20:10:11 by jaubry--         ###   ########.fr       */
+/*   Updated: 2026/01/18 15:50:56 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ static kind::KindTypes detect_assign(const std::string& str_func, const std::str
 static kind::KindTypes detect_ctor(const std::string& str_func, const std::string& class_name)
 {
 	const std::string	ctor_pattern = class_name + "::" + class_name;
+	const std::string	ccopy_pattern = "(const " + class_name + " &)";
 	const std::string	copy_pattern = "(" + class_name + " &)";
 	const std::string	move_pattern = "(" + class_name + " &&)";
 
@@ -45,7 +46,8 @@ static kind::KindTypes detect_ctor(const std::string& str_func, const std::strin
 		return (kind::FUNC);
 	else if (str_func.find("()") != std::string::npos)
 		return (kind::DEFAULT_CTOR);
-	else if (str_func.find(copy_pattern) != std::string::npos)
+	else if ((str_func.find(ccopy_pattern) != std::string::npos)
+			|| (str_func.find(copy_pattern) != std::string::npos))
 		return (kind::COPY_CTOR);
 	else if (str_func.find(move_pattern) != std::string::npos)
 		return (kind::MOVE_CTOR);
