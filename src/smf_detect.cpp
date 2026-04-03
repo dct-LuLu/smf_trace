@@ -6,7 +6,7 @@
 /*   By: jaubry-- <jaubry--@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/15 19:22:00 by jaubry--          #+#    #+#             */
-/*   Updated: 2026/04/03 16:07:53 by jaubry--         ###   ########.fr       */
+/*   Updated: 2026/04/03 16:52:21 by jaubry--         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,14 @@ static kind::KindTypes detect_assign(const std::string& str_func, const std::str
 	return (kind::FUNC);
 }
 
+#include <iostream>
+
 static kind::KindTypes detect_ctor(const std::string& str_func, const std::string& class_name)
 {
-	int	is_template = class_name.find('<');
+	const std::string::size_type	is_template = class_name.find('<');
 	const std::string	stripped_class_name = class_name.substr(0, is_template);
-	std::string	class_type = std::string();
-	if (is_template)
+	std::string	class_type = class_name;
+	if (is_template != std::string::npos)
 		class_type = stripped_class_name + "<T>";
 	const std::string	ctor_pattern = class_name + "::" + stripped_class_name;
 	const std::string	ccopy_pattern = "(const " + class_type + " &)";
